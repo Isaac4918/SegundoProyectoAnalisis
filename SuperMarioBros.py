@@ -13,11 +13,11 @@ while not done:
 
     #action = env.action_space.sample()
     #print(action)
-    action = [0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0]
+    action = [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0]
 
     ob, rew, done, info = env.step(action)
     print("ob",ob,"Action ", action, "Reward ", rew, "done ", done, "info", info)
-    time.sleep(1)
+    time.sleep(0.01)
 
     if done:
         obs = env.reset()

@@ -33,19 +33,22 @@ class Genetico:
         return action
 
     def cruceMutacion(self, padre1, padre2):
-        #cruce de padres: single point crossover
-        temp1 = padre1[0]
-        temp2 = padre2[1]
-
-        padre1[0] = temp2    
-        padre2[1] = temp1
-        
-        #mutacion de padres a hijos: swap
+        hijoNuevo = []
         genRandom = random.randint(0,1)
+
         if genRandom == 0:
             hijoNuevo = [padre1[1], padre2[0]]
         else:
             hijoNuevo = [padre1[0], padre2[1]]
+
+        porcentajeMutacion = random.randint(0,100)
+
+        if porcentajeMutacion < 5:
+            genAMutar = random.randint(0,1)
+            if hijoNuevo[genAMutar] == 0:
+                hijoNuevo[genAMutar] = 1
+            else:
+                hijoNuevo[genAMutar] = 0
 
         self.poblacion.append(hijoNuevo) #agrega el hijo a la poblacion
 
@@ -53,10 +56,11 @@ class Genetico:
     def main(self):
         i = 1
         self.generarPoblacionInicial()
-        padre1 = self.randomPadre()
-        padre2 = self.randomPadre()
  
         while i <= self.generaciones:
+            padre1 = self.randomPadre()
+            padre2 = self.randomPadre()
+            time.sleep(0.01)
             print("///////////Generacion ", i)
             self.env.render()
 

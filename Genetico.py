@@ -56,10 +56,10 @@ class Genetico:
     def main(self):
         i = 1
         self.generarPoblacionInicial()
- 
+        padre1 = self.randomPadre()
+        padre2 = self.randomPadre()
+
         while i <= self.generaciones:
-            padre1 = self.randomPadre()
-            padre2 = self.randomPadre()
             time.sleep(0.01)
             print("///////////Generacion ", i)
             self.env.render()

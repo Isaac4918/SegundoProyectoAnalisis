@@ -61,12 +61,12 @@ class Genetico:
         if genRandom == 0:
             self.asignaciones += 1 # Conteo
             self.lineasEjecutadas += 1 # Conteo
-            hijoNuevo = [padre1[0], padre1[1]]
+            hijoNuevo = [padre1[0], padre2[1]]
         
         elif genRandom == 1:
             self.asignaciones += 1 # Conteo
             self.lineasEjecutadas += 1 # Conteo
-            hijoNuevo = [padre2[0], padre2[1]]
+            hijoNuevo = [padre2[0], padre1[1]]
 
         porcentajeMutacion = random.randint(0,100)
 

@@ -2,7 +2,7 @@ import time
 
 import retro
 
-env = retro.make(game='SuperMarioBros-Nes', record=True)
+env = retro.make(game='SuperMarioBros-Nes', record=False)
 print(env.action_space)
 env.reset()
 
@@ -21,5 +21,7 @@ while not done:
 
     if done:
         obs = env.reset()
+
+    print(info)
 
 env.close()

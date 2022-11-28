@@ -1,3 +1,11 @@
+"""
+Proyecto 2 Análisis de algoritmos
+Isaac Araya Solano 2018151703
+Alexia Cerdas Aguilar 2019026961
+
+---> Este algoritmo actualmente no funciona
+"""
+
 import time
 import random
 import retro
@@ -18,9 +26,10 @@ class Probabilistico:
         while not self.done:
 
             if self.posicionX == 0 and len(self.jugadasCorrectas) > 0:
-                for i in self.jugadasCorrectas:
+                for i in range(0,len(self.jugadasCorrectas)-5):
+                    accion = self.jugadasCorrectas[i]
                     self.env.render()
-                    ob, rew, self.done, info = self.env.step(i)
+                    ob, rew, self.done, info = self.env.step(accion)
                     self.dormir()
                     self.posicionX = info['xscrollLo']
                     if self.posicionX == 0:

@@ -1,3 +1,9 @@
+"""
+Proyecto 2 Análisis de algoritmos
+Isaac Araya Solano 2018151703
+Alexia Cerdas Aguilar 2019026961
+"""
+
 import time
 import random
 import retro

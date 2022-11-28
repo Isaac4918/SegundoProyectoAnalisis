@@ -50,13 +50,13 @@ class Genetico:
         return action
 
 
-    def cruceMutacion(self, padre1, padre2): #18
+    def cruceMutacion(self, padre1, padre2): #16
         self.lineasEjecutadas += 7 # Conteo
         self.asignaciones += 8 # Conteo
         self.comparaciones += 2 # Conteo
 
         hijoNuevo = []
-        genRandom = random.randint(0,3)
+        genRandom = random.randint(0,1)
 
         if genRandom == 0:
             self.asignaciones += 1 # Conteo
@@ -67,16 +67,6 @@ class Genetico:
             self.asignaciones += 1 # Conteo
             self.lineasEjecutadas += 1 # Conteo
             hijoNuevo = [padre2[0], padre2[1]]
-
-        elif genRandom == 2:
-            self.asignaciones += 1 # Conteo
-            self.lineasEjecutadas += 1 # Conteo
-            hijoNuevo = [padre1[0], padre2[1]]
-
-        elif genRandom == 3:
-            self.asignaciones += 1 # Conteo
-            self.lineasEjecutadas += 1 # Conteo
-            hijoNuevo = [padre2[0], padre1[1]]
 
         porcentajeMutacion = random.randint(0,100)
 
@@ -99,7 +89,7 @@ class Genetico:
         self.poblacion.append(hijoNuevo) #agrega el hijo a la poblacion
 
 
-    def crearNuevaGeneracion(self): #28m+1
+    def crearNuevaGeneracion(self): #26m+1
         self.asignaciones += 2 # Conteo
         self.lineasEjecutadas += 2 # Conteo
         self.comparaciones += 1 # Conteo
@@ -122,7 +112,7 @@ class Genetico:
             if i == 0: #1
                 self.generarPoblacionInicial() #6m
             else:
-                self.crearNuevaGeneracion() #28m+1
+                self.crearNuevaGeneracion() #26m+1
                 self.poblacionFitness = [] #1
 
             for indiv in range(0, len(self.poblacion)): #17m
@@ -139,7 +129,7 @@ class Genetico:
                 
             self.env.reset() #1
 
-        #51mn + 4n
+        #49mn + 4n
 
         final = time.time()
         self.tiempoEjecucion = final - inicio

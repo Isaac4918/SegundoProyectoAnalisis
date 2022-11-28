@@ -3,128 +3,144 @@ import random
 import retro
 
 class Genetico:
-    
     def __init__(self, generaciones):
         self.env = retro.make(game='Airstriker-Genesis', record=False)
         
         self.generaciones = generaciones
-        self.cantIndividuos = 20
+        self.cantIndividuos = 500
         self.poblacion = []
-        self.jugadas = []
+        self.poblacionFitness = []
         self.env.reset()
-        self.done = False
-        self.asignaciones = 0
-        self.comparaciones = 0
-        self.lineasEjecutadas = 0
-        self.tiempoEjecucion = 0
+        self.asignaciones = 7 # Conteo
+        self.comparaciones = 0 # Conteo
+        self.lineasEjecutadas = 0 # Conteo
+        self.tiempoEjecucion = 0 # Conteo
 
-    def generarPoblacionInicial(self):
-        self.lineasEjecutadas += 1
+
+    def generarPoblacionInicial(self): #6m
+        self.lineasEjecutadas += 1 # Conteo
         for i in range(self.cantIndividuos):
-            self.asignaciones += 7
-            self.comparaciones += 1
-            self.lineasEjecutadas += 2
+            self.asignaciones += 7 # Conteo
+            self.comparaciones += 1 # Conteo
+            self.lineasEjecutadas += 2 # Conteo
             individuo = [random.randint(0,1),random.randint(0,1)]
             self.poblacion.append(individuo)
 
-    def randomPadre(self):
-        self.lineasEjecutadas += 2
-        self.asignaciones += 3
-        padre = self.poblacion[random.randint(0,self.cantIndividuos-1)]
+
+    def randomPadre(self): #5
+        self.lineasEjecutadas += 2 # Conteo
+        self.asignaciones += 4 # Conteo
+        padre = self.poblacionFitness[random.randint(0,len(self.poblacionFitness)-1)]
         return padre
 
-    def modificarAction(self, mov):
-        self.lineasEjecutadas += 4
-        self.asignaciones += 3
+
+    def crearAccion(self, mov): #4
+        self.lineasEjecutadas += 4 # Conteo
+        self.asignaciones += 3 # Conteo
         action = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         action[6] = mov[0]
         action[7] = mov[1]
 
         return action
 
-    def cruceMutacion(self, padre1, padre2):
-        self.lineasEjecutadas += 7
-        self.asignaciones += 8
-        self.comparaciones += 2
+
+    def cruceMutacion(self, padre1, padre2): #18
+        self.lineasEjecutadas += 7 # Conteo
+        self.asignaciones += 8 # Conteo
+        self.comparaciones += 2 # Conteo
 
         hijoNuevo = []
-        genRandom = random.randint(0,1)
+        genRandom = random.randint(0,3)
 
         if genRandom == 0:
-            self.asignaciones += 1
-            self.lineasEjecutadas += 1
-            hijoNuevo = [padre1[1], padre2[0]]
-        else:
-            self.asignaciones += 1
-            self.lineasEjecutadas += 1
+            self.asignaciones += 1 # Conteo
+            self.lineasEjecutadas += 1 # Conteo
+            hijoNuevo = [padre1[0], padre1[1]]
+        
+        elif genRandom == 1:
+            self.asignaciones += 1 # Conteo
+            self.lineasEjecutadas += 1 # Conteo
+            hijoNuevo = [padre2[0], padre2[1]]
+
+        elif genRandom == 2:
+            self.asignaciones += 1 # Conteo
+            self.lineasEjecutadas += 1 # Conteo
             hijoNuevo = [padre1[0], padre2[1]]
+
+        elif genRandom == 3:
+            self.asignaciones += 1 # Conteo
+            self.lineasEjecutadas += 1 # Conteo
+            hijoNuevo = [padre2[0], padre1[1]]
 
         porcentajeMutacion = random.randint(0,100)
 
         if porcentajeMutacion < 5:
-            self.asignaciones += 3
-            self.lineasEjecutadas += 3
-            self.comparaciones += 1
+            self.asignaciones += 3 # Conteo
+            self.lineasEjecutadas += 3 # Conteo
+            self.comparaciones += 1 # Conteo
+
             genAMutar = random.randint(0,1)
+
             if hijoNuevo[genAMutar] == 0:
-                self.asignaciones += 1
-                self.lineasEjecutadas += 1
+                self.asignaciones += 1 # Conteo
+                self.lineasEjecutadas += 1 # Conteo
                 hijoNuevo[genAMutar] = 1
             else:
-                self.asignaciones += 1
-                self.lineasEjecutadas += 1
+                self.asignaciones += 1 # Conteo
+                self.lineasEjecutadas += 1 # Conteo
                 hijoNuevo[genAMutar] = 0
 
         self.poblacion.append(hijoNuevo) #agrega el hijo a la poblacion
 
 
+    def crearNuevaGeneracion(self): #28m+1
+        self.asignaciones += 2 # Conteo
+        self.lineasEjecutadas += 2 # Conteo
+        self.comparaciones += 1 # Conteo
+
+        self.poblacion = []
+        for i in range(0,self.cantIndividuos):
+
+            self.asignaciones += 4 # Conteo
+            self.lineasEjecutadas += 3 # Conteo
+            self.comparaciones += 1 # Conteo
+
+            padre1 = self.randomPadre()
+            padre2 = self.randomPadre()
+            self.cruceMutacion(padre1, padre2)
+
+
     def main(self):
         inicio = time.time()
-        i = 1
-        self.generarPoblacionInicial()
-        padre1 = self.randomPadre()
-        padre2 = self.randomPadre()
+        for i in range(0, self.generaciones):
+            if i == 0: #1
+                self.generarPoblacionInicial() #6m
+            else:
+                self.crearNuevaGeneracion() #28m+1
+                self.poblacionFitness = [] #1
 
-        while i <= self.generaciones:
-            time.sleep(0.02)
-            print("///////////Generacion ", i)
-            self.env.render()
+            for indiv in range(0, len(self.poblacion)): #17m
+                #time.sleep(0.02)
+                #print("-->Generacion:", i+1, "| Individuo:", indiv+1)
+                self.env.render() #1
 
-            if self.done:
-                obs = self.env.reset()
-                self.env.close()
-                return
+                action = self.crearAccion(self.poblacion[indiv]) #7
 
-            if i >= 2:
-                jugadaAnterior = self.jugadas[len(self.jugadas)-1]
+                ob, rew, done, info = self.env.step(action) #6
+
+                if info['gameover'] == 9: #1
+                    self.poblacionFitness.append(self.poblacion[indiv]) #2
                 
-                padre1 = [jugadaAnterior[6], jugadaAnterior[7]]
-                padre2 = self.randomPadre()
+            self.env.reset() #1
 
-            
-            self.cruceMutacion(padre1, padre2)
-            movimiento = self.poblacion[random.randint(0,len(self.poblacion)-1)]
-            
-            action = self.modificarAction(movimiento)
-            
-            ob, rew, self.done, info = self.env.step(action)
-            if not self.done:
-                self.jugadas = self.jugadas + [action]
-
-            i = i + 1
-
-        #print(self.jugadas)
+        #51mn + 4n
 
         final = time.time()
         self.tiempoEjecucion = final - inicio
-        print("Tiempo:",self.tiempoEjecucion)
         print("Asignaciones:",self.asignaciones)
         print("Comparaciones:",self.comparaciones)
-        print("Lineas Ejecutadas:",self.lineasEjecutadas)
+        print("Lineas Ejecutadas:",self.lineasEjecutadas) 
+        print("Tiempo:",self.tiempoEjecucion)
         
-        
-            
-
-p = Genetico(1000)
+p = Genetico(90)
 p.main()
-
